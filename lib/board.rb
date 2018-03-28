@@ -2,10 +2,12 @@
 # is used to access other BoardSpace nodes across
 # the play surface.
 class Board
-  attr_reader :root_space
+  attr_reader :root_space, :max_x_value, :max_y_value
 
   def initialize
     @root_space = BoardSpace.new([0, 0])
+    @max_x_value = 6
+    @max_y_value = 5
   end
 end
 
@@ -13,9 +15,14 @@ end
 # node knows its own coordinates, which piece has
 # landed in it, and its relation to other nodes.
 class BoardSpace
-  attr_reader :coordinates
+  attr_reader :coordinates,
+              :up, :right, :down, :left
 
-  def initialize(coordinates)
+  def initialize(coordinates, up = nil, right = nil, down = nil, left = nil)
     @coordinates = coordinates
+    @up = up
+    @right = right
+    @down = down
+    @left = left
   end
 end
