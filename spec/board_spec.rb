@@ -12,6 +12,34 @@ describe Board do
     it { expect(@board.max_x_value).to eq(6) }
     it { expect(@board.max_y_value).to eq(5) }
   end
+
+  describe '#create_board' do
+    before do
+      @board = Board.new
+      @board.create_board
+      @current_x = @board.root_space
+      @current_x = @current_x.right until @current_x.right.nil?
+      @current_y = @board.root_space
+      @current_y = @current_y.up until @current_y.up.nil?
+      @fartherst_space = @current_y
+      loop do
+        @farthest_space = @farthest_space.right
+        break if @farthest_space.right.nil?
+      end
+    end
+    it 'creates BoardSpace row up to the @max_x_value' do
+      expect(@current_x.coordinates).to eq([@board.max_x_value, 0])
+      expect(@current_x.right).to be_nil
+    end
+    it 'creates BoardSpace column up to the @max_y_value' do
+      expect(@current_y.coordinates).to eq([0, @board.max_y_value])
+      expect(@current_y.up).to be_nil
+    end
+
+    it 'creates a BoardSpace node opposite corner from root_space' do
+      expect(@farthest_space.coordinates).to eq([@board.max_x_value, @board.max_y_value])
+    end
+  end
 end
 
 describe BoardSpace do
@@ -35,7 +63,7 @@ describe BoardSpace do
         @space_one = BoardSpace.new([4, 4])
         @space_two = BoardSpace.new([4, 5], up = @space_one)
       end
-      it { expect(@space_two.up).to eq(@space_one)}
+      it { expect(@space_two.up).to eq(@space_one) }
     end
 
     context 'when passed a right relational node' do
