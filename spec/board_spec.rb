@@ -21,11 +21,6 @@ describe Board do
       @current_x = @current_x.right until @current_x.right.nil?
       @current_y = @board.root_space
       @current_y = @current_y.up until @current_y.up.nil?
-      @fartherst_space = @current_y
-      loop do
-        @farthest_space = @farthest_space.right
-        break if @farthest_space.right.nil?
-      end
     end
     it 'creates BoardSpace row up to the @max_x_value' do
       expect(@current_x.coordinates).to eq([@board.max_x_value, 0])
@@ -37,6 +32,12 @@ describe Board do
     end
 
     it 'creates a BoardSpace node opposite corner from root_space' do
+      @farthest_space = @board.root_space
+      loop do
+        @farthest_space = @farthest_space.right unless @farthest_space.right.nil?
+        @farthest_space = @farthest_space.up unless @farthest_space.up.nil?
+        break if @farthest_space.right.nil? && @farthest_space.up.nil?
+      end
       expect(@farthest_space.coordinates).to eq([@board.max_x_value, @board.max_y_value])
     end
   end
