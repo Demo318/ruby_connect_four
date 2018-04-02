@@ -17,8 +17,5 @@ describe Player do
     context 'when initializing the second player' do
       it { expect(player_two.piece).to eq('⚫') }
     end
-
   end
-
-
 end
