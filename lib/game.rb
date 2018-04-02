@@ -17,11 +17,12 @@ class Game
     
   end
 
-  def number_of_players
-    puts 'How many people would like to play?'
-    number = gets.chomp.to_i
-    puts 'Human vs. Computer' if number == 1
-    # return number
+  def number_of_players(input = $stdin, output = $stdout)
+    user_interface = UI.new
+    user_interface.give('How many people would like to play?', output)
+    number = user_interface.receive(input)
+    # puts 'Human vs. Computer' if number == 1
+    number
   end
 
 end
