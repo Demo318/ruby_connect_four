@@ -10,6 +10,8 @@ class Board
     @max_y_value = 5
   end
 
+  public
+
   def create_board
     create_row(@root_space)
     space = @root_space
@@ -21,6 +23,12 @@ class Board
     stitch_all_columns_together(@root_space)
     @root_space
   end
+
+  def draw_board
+    puts "test"
+  end
+
+  private
 
   def stitch_all_columns_together(first_space)
     left_column_root = first_space
@@ -65,6 +73,7 @@ class Board
       space = space.right
     end
   end
+
 
 end
 

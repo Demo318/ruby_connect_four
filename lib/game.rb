@@ -11,18 +11,10 @@ class Game
     @board = board
   end
 
-  def get_player_names
-
-    
-  end
-
-  def number_of_players
-    puts 'How many people would like to play?'
-    number = gets.chomp.to_i
-    puts 'Human vs. Computer' if number == 1
-    number
-  end
-
 end
 
-connect_four = Game.new(Player.new, Player.new, Board.new)
+player_one = Player.new
+player_two = Player.new
+board = Board.new
+board.create_board
+connect_four = Game.new(player_one, player_two, board)

@@ -41,7 +41,24 @@ describe Board do
       expect(@farthest_space.coordinates).to eq([@board.max_x_value, @board.max_y_value])
     end
   end
+
+  describe '.draw_board' do
+    blank_board = %(  0   1   2   3   4   5   6
+|   |   |   |   |   |   |   |
+|   |   |   |   |   |   |   |
+|   |   |   |   |   |   |   |
+|   |   |   |   |   |   |   |
+|   |   |   |   |   |   |   |
+|   |   |   |   |   |   |   |
+-----------------------------)
+      before { @board = Board.new }
+      it 'draws a blank board' do
+        expect { @board.draw_board }.to output(blank_board).to_stdout
+      end
+  end
 end
+
+
 
 describe BoardSpace do
   describe '.initialize' do
