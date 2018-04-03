@@ -24,7 +24,10 @@ describe Game do
   describe '#number_of_players' do
     it 'can choose one player' do
       allow(game).to receive(:gets).and_return('1')
-      expect { expect(game.number_of_players).to eq(1) }.to output("How many people would like to play?\nHuman vs. Computer\n").to_stdout
+      expect do
+        expect(game.number_of_players).to eq(1)
+      end.to output("How many people would like to play?\n" \
+                    "Human vs. Computer\n").to_stdout
     end
   end
 end
