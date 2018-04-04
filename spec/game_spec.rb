@@ -5,6 +5,7 @@ require_relative '../lib/player.rb'
 require_relative '../lib/board.rb'
 
 describe Game do
+  Player.class_variable_set(:@@player_count, 0)
   let(:game) { Game.new(Player.new, Player.new, Board.new) }
 
   describe '.initialize' do
@@ -28,8 +29,29 @@ describe Game do
     context 'when column is full' do
       it { expect(game.column_full?(1)).to be(true) }
     end
+  end
 
-
+  describe '#pick_drop' do
+    before do
+      @game = game
+    end
+    context 'when passed a valid column number' do
+      it 'returns true and displays message' do
+        allow(@game).to receive(:gets).and_return("2\n")
+        expect do
+          expect(@game.pick_drop(game.player_1)).to be(true)
+        end.to output("Great choice!\n").to_stdout
+        expect(@game.board.find_space([2, 0]).piece).to eq(@game.player_1.piece)
+      end
+      it 'stacks piece on top of previous pieces' do
+        allow(@game).to receive(:gets).and_return("2\n")
+        expect do
+          expect(@game.pick_drop(game.player_2)).to be(true)
+        end.to output("Great choice!\n").to_stdout
+        expect(@game.board.find_space([2, 1]).piece).to eq(@game.player_2.piece)
+        puts @game.board.draw_board
+      end
+    end
   end
 
 

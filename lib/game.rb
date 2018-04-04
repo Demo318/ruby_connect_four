@@ -2,7 +2,6 @@ require_relative 'player.rb'
 require_relative 'board.rb'
 
 class Game
-
   attr_reader :player_1, :player_2, :board
 
   def initialize(player_1, player_2, board)
@@ -12,10 +11,17 @@ class Game
   end
 
   def column_full?(column)
-    if @board.find_space([column, @board.max_y_value]).piece != ' '
-      return true
-    end
+    return true if @board.find_space([column, @board.max_y_value]).piece != ' '
     false
+  end
+
+  def pick_drop(player)
+    column = gets.chomp.to_i
+    puts 'Great choice!'
+    space = @board.find_space([column, @board.max_y_value])
+    space = space.down until space.down.nil? || space.down.piece != ' '
+    space.piece = player.piece
+    true
   end
 
 end
