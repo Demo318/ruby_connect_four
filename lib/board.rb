@@ -21,14 +21,52 @@ class Board
       space = space.right
     end
     stitch_all_columns_together(@root_space)
-    @root_space
   end
 
   def draw_board
-    puts "test"
+    space = @root_space
+    space = space.up until space.up.nil?
+    board_display = %{  0   1   2   3   4   5   6\n}
+    loop do
+      board_display += draw_row(space)
+      break if space.down.nil?
+      space = space.down
+    end
+    board_display += "-----------------------------"
+    puts board_display
+  end
+
+  def find_space(coordinates)
+    raise 'Invalid X Value' if bad_x_value?(coordinates[0])
+    raise 'Invalid Y Value' if bad_y_value?(coordinates[1])
+    space = @root_space
+    space = space.right until space.coordinates[0] == coordinates[0]
+    space = space.up until space.coordinates[1] == coordinates[1]
+    space
   end
 
   private
+
+  def bad_x_value?(value)
+    return false if (0..@max_x_value).cover?(value)
+    true
+  end
+
+  def bad_y_value?(value)
+    return false if (0..@max_y_value).cover?(value)
+    true
+  end
+
+  def draw_row(space)
+    row_string = '| '
+    loop do
+      row_string += space.piece + ' |'
+      break if space.right.nil?
+      row_string += ' '
+      space = space.right
+    end
+    row_string + "\n"
+  end
 
   def stitch_all_columns_together(first_space)
     left_column_root = first_space
@@ -81,7 +119,7 @@ end
 # node knows its own coordinates, which piece has
 # landed in it, and its relation to other nodes.
 class BoardSpace
-  attr_accessor :up, :right, :down, :left, :coordinates
+  attr_accessor :up, :right, :down, :left, :coordinates, :piece
 
   def initialize(coordinates, up = nil, right = nil, down = nil, left = nil)
     @coordinates = coordinates
@@ -89,5 +127,6 @@ class BoardSpace
     @right = right
     @down = down
     @left = left
+    @piece = ' '
   end
 end

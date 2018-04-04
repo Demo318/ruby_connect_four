@@ -42,7 +42,25 @@ describe Board do
     end
   end
 
-  describe '.draw_board' do
+  describe '#find_space' do
+    context 'when passed array of space coordinates' do
+      before do
+        @board = Board.new
+        @board.create_board
+      end
+      it { expect(@board.find_space([2, 3]).coordinates).to eq([2, 3]) }
+      it 'Catches bad x value' do
+        expect { @board.find_space([@board.max_x_value + 1, 0]) }.to raise_error('Invalid X Value')
+        expect { @board.find_space([-1, 0]) }.to raise_error('Invalid X Value')
+      end
+      it 'Catches bad y value' do
+        expect { @board.find_space([0, @board.max_y_value + 1]) }.to raise_error('Invalid Y Value')
+        expect { @board.find_space([0, -1]) }.to raise_error('Invalid Y Value')
+      end
+    end
+  end
+
+  describe '#draw_board' do
     blank_board = %(  0   1   2   3   4   5   6
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
@@ -50,15 +68,17 @@ describe Board do
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
 |   |   |   |   |   |   |   |
------------------------------)
-      before { @board = Board.new }
-      it 'draws a blank board' do
-        expect { @board.draw_board }.to output(blank_board).to_stdout
-      end
+-----------------------------
+)
+    before do
+      @board = Board.new
+      @board.create_board
+    end
+    it 'draws a blank board' do
+      expect { @board.draw_board }.to output(blank_board).to_stdout
+    end
   end
 end
-
-
 
 describe BoardSpace do
   describe '.initialize' do
@@ -69,7 +89,7 @@ describe BoardSpace do
     end
 
     context 'when passed no relational nodes' do
-      before { @space_one = BoardSpace.new([4, 4])}
+      before { @space_one = BoardSpace.new([4, 4]) }
       it { expect(@space_one.up).to be_nil }
       it { expect(@space_one.right).to be_nil }
       it { expect(@space_one.down).to be_nil }
@@ -100,7 +120,7 @@ describe BoardSpace do
       it { expect(@space_two.down).to eq(@space_one) }
     end
 
-    context 'when passed a leftrelational node' do
+    context 'when passed a left relational node' do
       before do
         @space_one = BoardSpace.new([4, 4])
         @space_two = BoardSpace.new([3, 4], nil, nil, nil, @space_one)
