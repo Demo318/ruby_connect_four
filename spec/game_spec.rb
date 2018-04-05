@@ -43,18 +43,37 @@ describe Game do
         allow(@game).to receive(:gets).and_return("2\n")
         expect do
           expect(@game.pick_drop(game.player_1)).to be(true)
-        end.to output("Great choice!\n").to_stdout
-        
+        end.to output("Where would you like to drop your next piece?\nGreat choice!\n").to_stdout
+
         expect(@game.board.find_space([2, 0]).piece).to eq(@game.player_1.piece)
       end
       it 'stacks piece on top of previous pieces' do
         allow(@game).to receive(:gets).and_return("2\n")
         expect do
           expect(@game.pick_drop(game.player_2)).to be(true)
-        end.to output("Great choice!\n").to_stdout
+        end.to output("Where would you like to drop your next piece?\nGreat choice!\n").to_stdout
 
         expect(@game.board.find_space([2, 1]).piece).to eq(@game.player_2.piece)
       end
+
+      it 'does not let player stack onto full column' do
+        allow(@game).to receive(:gets).and_return("1\n")
+
+        expect do
+          expect(@game.pick_drop(game.player_1)).to be(false)
+        end.to output("Where would you like to drop your next piece?\nThat column is full.\n").to_stdout
+      end
+    end
+
+    context 'when user enters column number outside the range' do
+      it 'does not let player attempt move' do
+        allow(@game).to receive(:gets).and_return("#{@game.board.max_x_value + 1}\n")
+
+        expect do
+          expect(@game.pick_drop(game.player_1)).to be(false)
+        end.to output("Where would you like to drop your next piece?\nThat is not a valid column.\n").to_stdout
+      end
+
     end
   end
 
