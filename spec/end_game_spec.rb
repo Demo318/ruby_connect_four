@@ -20,15 +20,26 @@ describe EndGame do
   let(:game) { Game.new(player_one, player_two, game_board) }
 
   describe '.horizontal_win?' do
-    context 'when passed a newly-placed piece & board with winning circumstance' do
+    context 'when passed a newly-placed piece & board with horizontal winning circumstance' do
       before do
         (1..4).each do |x|
           game.board.find_space([x, 0]).piece = game.player_1.piece
         end
-        @piece = game.board.find_space([2, 0])
+        @space = game.board.find_space([2, 0])
       end
-      it { expect(end_game_tester.horizontal_win?(@piece, game.board)).to be_true }
+      it { expect(end_game_tester.horizontal_win?(@space)).to be(true) }
     end
   end
 
+  describe '.verticle_win?' do
+    context 'when passed a newly-placed piece & board with verticle winning circumstance' do
+      before do
+        (1..4).each do |y|
+          game.board.find_space([0, y]).piece = game.player_2.piece
+        end
+        @space = game.board.find_space([0, 2])
+      end
+      it { expect(end_game_tester.verticle_win?(@space)).to be(true) }
+    end
+  end
 end
