@@ -6,7 +6,11 @@ require_relative '../lib/board.rb'
 
 describe Game do
   Player.class_variable_set(:@@player_count, 0)
-  let(:game) { Game.new(Player.new, Player.new, Board.new) }
+  player_one = Player.new
+  player_two = Player.new
+  game_board = Board.new
+  game_board.create_board
+  let(:game) { Game.new(player_one, player_two, game_board) }
 
   describe '.initialize' do
     it 'has two players and a board' do
@@ -17,7 +21,6 @@ describe Game do
   end
 
   before do
-    game.board.create_board
     (0..game.board.max_y_value).each do |y|
       game.board.find_space([1, y]).piece = game.player_1.piece
     end
@@ -41,6 +44,7 @@ describe Game do
         expect do
           expect(@game.pick_drop(game.player_1)).to be(true)
         end.to output("Great choice!\n").to_stdout
+        
         expect(@game.board.find_space([2, 0]).piece).to eq(@game.player_1.piece)
       end
       it 'stacks piece on top of previous pieces' do
@@ -48,8 +52,8 @@ describe Game do
         expect do
           expect(@game.pick_drop(game.player_2)).to be(true)
         end.to output("Great choice!\n").to_stdout
+
         expect(@game.board.find_space([2, 1]).piece).to eq(@game.player_2.piece)
-        puts @game.board.draw_board
       end
     end
   end
