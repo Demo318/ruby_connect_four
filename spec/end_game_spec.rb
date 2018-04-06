@@ -43,4 +43,25 @@ describe EndGame do
       it { expect(end_game_tester.verticle_win?(@space)).to be(true) }
     end
   end
+
+  describe '.diagonal_win?' do
+    context 'when passed a newly-placed piece & board with bottom-to-top diagonal win' do
+      before do
+        (1..4).each do |num|
+          game.board.find_space([num, num]).piece = game.player_1.piece
+        end
+        @space = game.board.find_space([2, 2])
+      end
+      it { expect(end_game_tester.diagonal_win?(@space)).to be(true) }
+    end
+    context 'when passed a newly-placed piece & board with top-to-bottom diagonal win' do
+      before do
+        (1..4).each do |num|
+          game.board.find_space([num, 4 - num]).piece = game.player_2.piece
+        end
+        @space = game.board.find_space([2, 2])
+      end
+      it { expect(end_game_tester.diagonal_win?(@space)).to be(true) }
+    end
+  end
 end
