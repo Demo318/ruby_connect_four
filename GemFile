@@ -4,3 +4,4 @@ gem 'rspec'
 gem 'rake'
 
 gem 'simplecov', require: false, group: :test
+gem 'codeclimate-test-reporter'
