@@ -24,20 +24,28 @@ class Game
 
   def pick_drop(player)
     puts 'Where would you like to drop your next piece?'
-    column = gets.chomp.to_i
-    if invalid_column?(column)
+    column = gets.chomp
+    if not_a_single_number?(column)
+      puts 'Please enter a single digit.'
+      return false
+    elsif invalid_column?(column.to_i)
       puts 'That is not a valid column.'
       return false
-    elsif column_full?(column)
+    elsif column_full?(column.to_i)
       puts 'That column is full.'
       return false
     end
-    place_piece(column, player)
+    place_piece(column.to_i, player)
     puts 'Great choice!'
     true
   end
 
   private
+
+  def not_a_single_number?(entry)
+    return true if entry.length > 1 || entry.empty? || (/[0-9]/ =~ entry) != 0
+    false
+  end
 
   def invalid_column?(column_number)
     return false if (0..@board.max_x_value).cover?(column_number)
