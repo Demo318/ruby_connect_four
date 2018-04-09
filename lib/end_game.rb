@@ -4,7 +4,6 @@
 # a draw has occured.
 module EndGame
   def victory?(space)
-    puts 'victory test'
     horizontal_win?(space) || verticle_win?(space) || diagonal_win?(space)
   end
 

@@ -6,7 +6,7 @@ board = Board.new
 board.create_board
 connect_four = Game.new(player_one, player_two, board)
 
-puts 'Welcome message goes here.'
+puts 'Welcome to CONNECT FOUR!'
 current_player = connect_four.player_1
 next_player = connect_four.player_2
 loop do
