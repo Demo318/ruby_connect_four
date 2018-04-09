@@ -3,7 +3,6 @@
 # and diagonal series of four pieces. Module also sensitive to when
 # a draw has occured.
 module EndGame
-
   def horizontal_win?(space)
     matches = [space]
     matches = add_straight_matches(space, matches, :left)
@@ -26,73 +25,29 @@ module EndGame
 
   private
 
-  def add_straight_matches(space, matches_array, direct)
-    next_space = space.send(direct)
-    loop do
-      break if next_space.nil?
-      break if next_space.piece != space.piece
-      matches_array.append(next_space)
-      next_space = next_space.send(direct)
-    end
-    matches_array
+  def diagonal_up_to_down(space)
+    matches = [space]
+    matches = add_diagonal_matches(space, matches, :up, :left)
+    matches = add_diagonal_matches(space, matches, :down, :right)
+    return true if matches.length >= 4
+    false
   end
 
   def diagonal_down_to_up(space)
     matches = [space]
-    matches = add_up_right_matches(space, matches)
-    matches = add_down_left_matches(space, matches)
+    matches = add_diagonal_matches(space, matches, :up, :right)
+    matches = add_diagonal_matches(space, matches, :down, :left)
     return true if matches.length >= 4
     false
   end
 
-  def add_up_right_matches(space, matches_array)
-    next_space = next_diagonal_space(space, :up, :right)
+  def add_diagonal_matches(space, matches_array, direct_one, direct_two)
+    next_space = next_diagonal_space(space, direct_one, direct_two)
     loop do
       break if next_space.nil?
       break if next_space.piece != space.piece
       matches_array.append(next_space)
-      next_space = next_diagonal_space(next_space, :up, :right)
-    end
-    matches_array
-  end
-
-  def add_down_left_matches(space, matches_array)
-    next_space = next_diagonal_space(space, :down, :left)
-    loop do
-      break if next_space.nil?
-      break if next_space.piece != space.piece
-      matches_array.append(next_space)
-      next_space = next_diagonal_space(next_space, :down, :left)
-    end
-    matches_array
-  end
-
-  def diagonal_up_to_down(space)
-    matches = [space]
-    matches = add_up_left_matches(space, matches)
-    matches = add_down_right_matches(space, matches)
-    return true if matches.length >= 4
-    false
-  end
-
-  def add_down_right_matches(space, matches_array)
-    next_space = next_diagonal_space(space, :down, :right)
-    loop do
-      break if next_space.nil?
-      break if next_space.piece != space.piece
-      matches_array.append(next_space)
-      next_space = next_diagonal_space(next_space, :down, :right)
-    end
-    matches_array
-  end
-
-  def add_up_left_matches(space, matches_array)
-    next_space = next_diagonal_space(space, :up, :left)
-    loop do
-      break if next_space.nil?
-      break if next_space.piece != space.piece
-      matches_array.append(next_space)
-      next_space = next_diagonal_space(next_space, :up, :left)
+      next_space = next_diagonal_space(next_space, direct_one, direct_two)
     end
     matches_array
   end
@@ -105,4 +60,14 @@ module EndGame
     space
   end
 
+  def add_straight_matches(space, matches_array, direct)
+    next_space = space.send(direct)
+    loop do
+      break if next_space.nil?
+      break if next_space.piece != space.piece
+      matches_array.append(next_space)
+      next_space = next_space.send(direct)
+    end
+    matches_array
+  end
 end
