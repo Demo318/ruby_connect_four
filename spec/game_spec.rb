@@ -43,7 +43,7 @@ describe Game do
       it 'returns true and displays message' do
         allow(@game).to receive(:gets).and_return("2\n")
         expect do
-          expect(@game.pick_drop(game.player_1)).to be(true)
+          expect(@game.pick_drop(game.player_1)).to be_instance_of(BoardSpace)
         end.to output("Where would you like to drop your next piece?\nGreat choice!\n").to_stdout
 
         expect(@game.board.find_space([2, 0]).piece).to eq(@game.player_1.piece)
@@ -51,7 +51,7 @@ describe Game do
       it 'stacks piece on top of previous pieces' do
         allow(@game).to receive(:gets).and_return("2\n")
         expect do
-          expect(@game.pick_drop(game.player_2)).to be(true)
+          expect(@game.pick_drop(game.player_2)).to be_instance_of(BoardSpace)
         end.to output("Where would you like to drop your next piece?\nGreat choice!\n").to_stdout
 
         expect(@game.board.find_space([2, 1]).piece).to eq(@game.player_2.piece)

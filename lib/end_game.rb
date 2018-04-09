@@ -3,6 +3,11 @@
 # and diagonal series of four pieces. Module also sensitive to when
 # a draw has occured.
 module EndGame
+  def victory?(space)
+    puts 'victory test'
+    horizontal_win?(space) || verticle_win?(space) || diagonal_win?(space)
+  end
+
   def horizontal_win?(space)
     matches = [space]
     matches = add_straight_matches(space, matches, :left)

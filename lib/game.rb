@@ -1,8 +1,10 @@
 require_relative 'player.rb'
 require_relative 'board.rb'
+require_relative 'end_game.rb'
 
 class Game
-  attr_reader :player_1, :player_2, :board
+  attr_reader :player_1, :player_2, :board, :last_drop
+  include EndGame
 
   def initialize(player_1, player_2, board)
     @player_1 = player_1
@@ -17,8 +19,8 @@ class Game
 
   def take_turn(player)
     loop do
-      done = pick_drop(player)
-      break if done == true
+      @last_drop = pick_drop(player)
+      break if @last_drop.class == BoardSpace
     end
   end
 
@@ -35,9 +37,9 @@ class Game
       puts 'That column is full.'
       return false
     end
-    place_piece(column.to_i, player)
+    space = place_piece(column.to_i, player)
     puts 'Great choice!'
-    true
+    space
   end
 
   private
@@ -56,6 +58,7 @@ class Game
     space = @board.find_space([column, @board.max_y_value])
     space = space.down until space.down.nil? || space.down.piece != ' '
     space.piece = player.piece
+    space
   end
 
 end
